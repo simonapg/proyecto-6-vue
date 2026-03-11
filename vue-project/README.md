@@ -1,27 +1,18 @@
-# ClimaMundo Chile - SPA Vue
+# Tiempo en Chile
 
-Aplicacion de una sola pagina (SPA) desarrollada con Vue 3 + Vite para visualizar clima por localidades chilenas.
+Aplicacion SPA desarrollada con Vue 3, Vue Router y SASS para consultar el clima de distintas localidades de Chile.
 
-## Funcionalidades
+La app muestra un listado principal con datos actuales, permite filtrar lugares de forma reactiva y navegar a una vista de detalle con pronostico semanal, estadisticas y cambio inmediato de unidad de temperatura. La informacion meteorologica se obtiene desde la API de Open-Meteo.
 
-- Home (`/`): lista de lugares con clima actual.
-- Detalle (`/lugar/:id`): datos actuales, pronostico semanal y estadisticas.
-- Navegacion interna sin recarga usando Vue Router.
-- Interacciones con `v-model`:
-  - busqueda de lugares por nombre,
-  - selector de unidad de temperatura (C/F),
-  - mostrar/ocultar estadisticas semanales.
+## Tecnologias
 
-## Estructura
+- Vue 3
+- Vue Router
+- Vite
+- SASS
+- Open-Meteo API
 
-- `src/App.vue`: layout raiz de la SPA.
-- `src/router/index.js`: rutas `home` y `detalle-lugar`.
-- `src/views/HomeView.vue`: vista principal con listado y busqueda.
-- `src/views/PlaceDetailView.vue`: vista dinamica por lugar.
-- `src/data/mockWeatherData.js`: datos climaticos mock.
-- `src/services/weatherService.js`: acceso a datos y calculos de estadisticas/alertas.
-
-## Como ejecutar
+## Ejecucion
 
 ```sh
 npm install
@@ -33,3 +24,5 @@ npm run dev
 ```sh
 npm run build
 ```
+
+Desarrollado por Simon Palacios.
