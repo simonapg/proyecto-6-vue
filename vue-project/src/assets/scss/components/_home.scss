@@ -1,0 +1,101 @@
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
+
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $space-sm;
+  align-items: end;
+}
+
+.listado {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $space-md;
+}
+
+.location-card {
+  @include card-surface;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+  padding: $space-md;
+
+  &:hover {
+    border-color: $color-primary;
+  }
+
+  &__icon {
+    font-size: 2.8rem;
+    opacity: 0.9;
+    text-align: center;
+    margin-bottom: $space-sm;
+  }
+
+  &__name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: $color-text;
+    letter-spacing: 0.02em;
+  }
+
+  &__country {
+    color: $color-text-muted;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  &__date-block {
+    margin-bottom: $space-md;
+    padding: $space-sm;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__date-label {
+    margin-bottom: $space-xxs;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: $color-text-muted;
+  }
+
+  &__date {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $color-text;
+    line-height: 1.4;
+  }
+
+  &__temp {
+    font-size: 2.5rem;
+    font-weight: 200;
+    color: $color-primary;
+    letter-spacing: -0.02em;
+  }
+
+  &__state {
+    color: $color-text-muted;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+  }
+}
+
+.card__head h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: $color-text;
+  letter-spacing: 0.02em;
+}
+
+.card__head span,
+.estado,
+.vacio,
+p {
+  color: $color-text-muted;
+}

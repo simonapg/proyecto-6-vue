@@ -1,0 +1,16 @@
+@use 'variables' as *;
+
+@mixin card-surface {
+  background-color: $color-surface;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-card;
+}
+
+@mixin kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: $color-text-muted;
+}

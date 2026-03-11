@@ -1,0 +1,98 @@
+@use '../base/variables' as *;
+
+label {
+  display: grid;
+  gap: $space-xxs;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $color-text;
+}
+
+input,
+select,
+button {
+  border: 2px solid $color-border;
+  border-radius: 0;
+  padding: 12px;
+  font: inherit;
+}
+
+.temp {
+  font-size: 2.5rem;
+  font-weight: 200;
+  color: $color-primary;
+  letter-spacing: -0.02em;
+  margin: $space-xs 0;
+}
+
+.list-group {
+  list-style: none;
+  margin: 0 0 $space-md;
+  padding: 0;
+}
+
+.list-group-item,
+.list-group li {
+  border-top: 1px solid $color-border;
+  padding: $space-sm 0;
+  display: flex;
+  justify-content: space-between;
+  gap: $space-sm;
+}
+
+.list-group-item:last-child,
+.list-group li:last-child {
+  border-bottom: 1px solid $color-border;
+}
+
+.link {
+  color: $color-primary;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-primary,
+.toolbar button,
+.listado button {
+  background-color: $color-primary;
+  border: 2px solid $color-primary;
+  color: $color-surface;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 12px 20px;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.btn-primary:hover,
+.toolbar button:hover,
+.listado button:hover {
+  background-color: $color-surface;
+  color: $color-primary;
+  border-color: $color-primary;
+}
+
+.btn-outline-primary {
+  color: $color-primary;
+  border: 2px solid $color-primary;
+  background-color: transparent;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 12px 20px;
+  border-radius: 0;
+}
+
+.btn-outline-primary:hover {
+  background-color: $color-primary;
+  color: $color-surface;
+}
+
+@media (max-width: $breakpoint-sm) {
+  .temp {
+    font-size: 1.6rem;
+  }
+}
