@@ -26,7 +26,10 @@
         :unidad="unidad"
         :temperatura="formatearTemp(lugar.tempActual)"
         :icono="obtenerIconoClima(lugar.estadoActual)"
+        :puede-favorito="isAuthenticated"
+        :is-favorite="esFavorito(lugar.id)"
         @ver-detalle="verDetalle"
+        @toggle-favorito="toggleFavorito"
       />
     </div>
   </section>
@@ -41,6 +44,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import { convertirTemperatura, obtenerLugares } from '../services/weatherService';
 import HomeHeroSection from '../components/home/HomeHeroSection.vue';
 import HomeLocationCard from '../components/home/HomeLocationCard.vue';
@@ -64,6 +68,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('auth', ['isAuthenticated', 'preferencias', 'esFavorito']),
     temperaturaDestacada() {
       if (!this.destacado) return '--';
       return this.formatearTemp(this.destacado.tempActual);
@@ -82,6 +87,10 @@ export default {
     this.cargando = true;
     this.error = '';
 
+    if (this.preferencias?.unidad) {
+      this.unidad = this.preferencias.unidad;
+    }
+
     try {
       this.lugares = await obtenerLugares();
     } catch (error) {
@@ -92,12 +101,20 @@ export default {
     }
   },
   methods: {
+    ...mapActions('auth', ['toggleFavorito']),
     verDetalle(id) {
       this.$router.push({ name: 'detalle-lugar', params: { id } });
     },
     obtenerIconoClima,
     formatearTemp(valor) {
       return convertirTemperatura(valor, this.unidad).toFixed(1);
+    }
+  },
+  watch: {
+    'preferencias.unidad'(valor) {
+      if (valor) {
+        this.unidad = valor;
+      }
     }
   }
 };

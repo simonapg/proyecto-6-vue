@@ -8,7 +8,18 @@
         </router-link>
         <nav class="weather-navbar__links">
           <router-link to="/">Inicio</router-link>
+          <router-link v-if="isAuthenticated" to="/favoritos">Favoritos</router-link>
+          <router-link v-if="isAuthenticated" to="/preferencias">Preferencias</router-link>
+          <router-link v-if="!isAuthenticated" to="/login">Login</router-link>
+          <router-link v-if="!isAuthenticated" to="/registro">Registro</router-link>
         </nav>
+
+        <div v-if="isAuthenticated" class="weather-navbar__session">
+          <span class="weather-navbar__user">Hola, {{ nombreUsuario }}</span>
+          <button class="btn-outline-primary weather-navbar__logout" type="button" @click="handleLogout">
+            Cerrar sesion
+          </button>
+        </div>
       </div>
     </header>
 
@@ -24,3 +35,21 @@
     </footer>
   </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+
+export default {
+  name: 'App',
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated', 'nombreUsuario'])
+  },
+  methods: {
+    ...mapActions('auth', ['logout']),
+    async handleLogout() {
+      await this.logout();
+      this.$router.push('/login');
+    }
+  }
+};
+</script>

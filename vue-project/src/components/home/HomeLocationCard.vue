@@ -16,14 +16,25 @@
     <p>Humedad: {{ lugar.humedad }}%</p>
     <p>Viento: {{ lugar.viento }} km/h</p>
 
+    <FavoriteToggleButton
+      v-if="puedeFavorito"
+      :is-favorite="isFavorite"
+      @toggle="$emit('toggle-favorito', lugar.id)"
+    />
+
     <button class="btn-outline-primary" @click="$emit('ver-detalle', lugar.id)">Ver detalle</button>
   </article>
 </template>
 
 <script>
+import FavoriteToggleButton from '../user/FavoriteToggleButton.vue';
+
 export default {
   name: 'HomeLocationCard',
-  emits: ['ver-detalle'],
+  components: {
+    FavoriteToggleButton
+  },
+  emits: ['ver-detalle', 'toggle-favorito'],
   props: {
     lugar: {
       type: Object,
@@ -40,6 +51,14 @@ export default {
     icono: {
       type: String,
       required: true
+    },
+    puedeFavorito: {
+      type: Boolean,
+      default: false
+    },
+    isFavorite: {
+      type: Boolean,
+      default: false
     }
   }
 };

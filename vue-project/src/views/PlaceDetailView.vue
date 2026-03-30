@@ -11,6 +11,12 @@
   <section v-else-if="lugar" class="detalle">
     <DetailHeaderCard :lugar="lugar" />
 
+    <FavoriteToggleButton
+      v-if="isAuthenticated"
+      :is-favorite="esFavorito(lugar.id)"
+      @toggle="toggleFavorito(lugar.id)"
+    />
+
     <section class="detail-grid">
       <CurrentWeatherCard
         :lugar="lugar"
@@ -46,6 +52,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import {
   calcularEstadisticasSemana,
   convertirTemperatura,
@@ -57,6 +64,7 @@ import DetailHeaderCard from '../components/detail/DetailHeaderCard.vue';
 import DetailInfoCard from '../components/detail/DetailInfoCard.vue';
 import ForecastWeekGrid from '../components/detail/ForecastWeekGrid.vue';
 import WeeklyStatsPanel from '../components/detail/WeeklyStatsPanel.vue';
+import FavoriteToggleButton from '../components/user/FavoriteToggleButton.vue';
 import { obtenerIconoClima } from '../utils/weatherPresentation';
 
 export default {
@@ -66,7 +74,8 @@ export default {
     DetailHeaderCard,
     DetailInfoCard,
     ForecastWeekGrid,
-    WeeklyStatsPanel
+    WeeklyStatsPanel,
+    FavoriteToggleButton
   },
   data() {
     return {
@@ -77,6 +86,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('auth', ['isAuthenticated', 'preferencias', 'esFavorito']),
     temperaturaActualTexto() {
       if (!this.lugar) return '0.0';
       return this.formatearTemp(this.lugar.tempActual);
@@ -121,14 +131,14 @@ export default {
     }
   },
   async created() {
+    if (this.preferencias?.unidad) {
+      this.unidad = this.preferencias.unidad;
+    }
+
     await this.cargarLugar();
   },
-  watch: {
-    async '$route.params.id'() {
-      await this.cargarLugar();
-    }
-  },
   methods: {
+    ...mapActions('auth', ['toggleFavorito']),
     async cargarLugar() {
       this.cargando = true;
       this.error = '';
@@ -148,6 +158,16 @@ export default {
     obtenerIconoClima,
     formatearTemp(valor) {
       return convertirTemperatura(valor, this.unidad).toFixed(1);
+    }
+  },
+  watch: {
+    async '$route.params.id'() {
+      await this.cargarLugar();
+    },
+    'preferencias.unidad'(valor) {
+      if (valor) {
+        this.unidad = valor;
+      }
     }
   }
 };
