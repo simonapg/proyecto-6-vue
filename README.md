@@ -47,6 +47,16 @@ Tambien puedes crear nuevos usuarios desde /registro.
 
 ## Ejecucion
 
+### Requisitos
+
+- Node.js 20.19.0 o superior
+- npm (incluido con Node.js)
+
+### Configuracion de variables
+
+- Esta app usa Open-Meteo y no requiere API key.
+- No es necesario crear archivo .env para la ejecucion local actual.
+
 ```sh
 cd vue-project
 npm install
