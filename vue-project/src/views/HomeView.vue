@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { convertirTemperatura, obtenerLugares } from '../services/weatherService';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import { convertirTemperatura } from '../services/weatherService';
 import HomeHeroSection from '../components/home/HomeHeroSection.vue';
 import HomeLocationCard from '../components/home/HomeLocationCard.vue';
 import HomeToolbar from '../components/home/HomeToolbar.vue';
@@ -60,14 +60,16 @@ export default {
   },
   data() {
     return {
-      lugares: [],
-      cargando: true,
-      error: '',
       busqueda: '',
       unidad: 'C'
     };
   },
   computed: {
+    ...mapState('clima', {
+      lugares: (state) => state.lugares,
+      cargando: (state) => state.cargandoLugares,
+      error: (state) => state.errorLugares
+    }),
     ...mapGetters('auth', ['isAuthenticated', 'preferencias', 'esFavorito']),
     temperaturaDestacada() {
       if (!this.destacado) return '--';
@@ -84,23 +86,14 @@ export default {
     }
   },
   async created() {
-    this.cargando = true;
-    this.error = '';
-
     if (this.preferencias?.unidad) {
       this.unidad = this.preferencias.unidad;
     }
 
-    try {
-      this.lugares = await obtenerLugares();
-    } catch (error) {
-      this.error = 'No se pudieron cargar los datos climaticos desde la API.';
-      this.lugares = [];
-    } finally {
-      this.cargando = false;
-    }
+    await this.cargarLugares();
   },
   methods: {
+    ...mapActions('clima', ['cargarLugares']),
     ...mapActions('auth', ['toggleFavorito']),
     verDetalle(id) {
       this.$router.push({ name: 'detalle-lugar', params: { id } });

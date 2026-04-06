@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { convertirTemperatura, obtenerLugares } from '../services/weatherService';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import { convertirTemperatura } from '../services/weatherService';
 import { obtenerIconoClima } from '../utils/weatherPresentation';
 import UserFavoritesSection from '../components/user/UserFavoritesSection.vue';
 
@@ -22,13 +22,14 @@ export default {
     UserFavoritesSection
   },
   data() {
-    return {
-      lugares: [],
-      cargando: true,
-      error: ''
-    };
+    return {};
   },
   computed: {
+    ...mapState('clima', {
+      lugares: (state) => state.lugares,
+      cargando: (state) => state.cargandoLugares,
+      error: (state) => state.errorLugares
+    }),
     ...mapGetters('auth', ['favoritos', 'preferencias']),
     unidad() {
       return this.preferencias?.unidad || 'C';
@@ -45,18 +46,12 @@ export default {
     }
   },
   async created() {
-    this.cargando = true;
-    this.error = '';
-    try {
-      this.lugares = await obtenerLugares();
-    } catch (error) {
-      this.error = 'No se pudieron cargar los favoritos desde la API de clima.';
-      this.lugares = [];
-    } finally {
-      this.cargando = false;
+    if (!this.lugares.length) {
+      await this.cargarLugares();
     }
   },
   methods: {
+    ...mapActions('clima', ['cargarLugares']),
     ...mapActions('auth', ['toggleFavorito']),
     verDetalle(id) {
       this.$router.push({ name: 'detalle-lugar', params: { id } });

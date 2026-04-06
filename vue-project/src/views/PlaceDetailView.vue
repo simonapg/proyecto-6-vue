@@ -52,12 +52,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import {
   calcularEstadisticasSemana,
   convertirTemperatura,
-  generarAlertas,
-  obtenerLugarPorId
+  generarAlertas
 } from '../services/weatherService';
 import CurrentWeatherCard from '../components/detail/CurrentWeatherCard.vue';
 import DetailHeaderCard from '../components/detail/DetailHeaderCard.vue';
@@ -79,13 +78,15 @@ export default {
   },
   data() {
     return {
-      lugar: null,
-      unidad: 'C',
-      cargando: true,
-      error: ''
+      unidad: 'C'
     };
   },
   computed: {
+    ...mapState('clima', {
+      lugar: (state) => state.lugarDetalle,
+      cargando: (state) => state.cargandoDetalle,
+      error: (state) => state.errorDetalle
+    }),
     ...mapGetters('auth', ['isAuthenticated', 'preferencias', 'esFavorito']),
     temperaturaActualTexto() {
       if (!this.lugar) return '0.0';
@@ -138,22 +139,10 @@ export default {
     await this.cargarLugar();
   },
   methods: {
+    ...mapActions('clima', ['cargarLugarDetalle']),
     ...mapActions('auth', ['toggleFavorito']),
     async cargarLugar() {
-      this.cargando = true;
-      this.error = '';
-
-      try {
-        this.lugar = await obtenerLugarPorId(this.$route.params.id);
-        if (!this.lugar) {
-          this.error = 'Lugar no encontrado';
-        }
-      } catch (error) {
-        this.lugar = null;
-        this.error = 'No se pudo cargar el clima del lugar desde la API.';
-      } finally {
-        this.cargando = false;
-      }
+      await this.cargarLugarDetalle(this.$route.params.id);
     },
     obtenerIconoClima,
     formatearTemp(valor) {
