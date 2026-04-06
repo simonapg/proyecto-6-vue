@@ -23,6 +23,11 @@ La app muestra un listado principal con datos actuales, permite filtrar lugares 
 - SASS
 - Open-Meteo API
 
+## Enlaces
+
+- Repositorio publico: https://github.com/simonapg/proyecto-6-vue
+- Deploy (Vercel): https://proyecto-6-vue.vercel.app/
+
 ## Rutas principales
 
 - /: Home publica
